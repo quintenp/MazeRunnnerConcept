@@ -1,26 +1,30 @@
 ﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     private Rigidbody2D playerRigidBody;
     private RaycastHit2D groundRayCastHit;
     private RaycastHit2D roofRayCastHit;
 
-    void Start () {
+    private bool flipUp;
+    private bool flipDown;
+    private bool isFacingRight;
+    void Start()
+    {
         playerRigidBody = GetComponent<Rigidbody2D>();
+        isFacingRight = true;
     }
 
     void Update()
     {
-        groundRayCastHit = Physics2D.Linecast(transform.position, new Vector2(transform.position.x, transform.position.y - 2), 1 << LayerMask.NameToLayer("Ground"));
-        roofRayCastHit = Physics2D.Linecast(transform.position, new Vector2(transform.position.x, transform.position.y + 2), 1 << LayerMask.NameToLayer("Roof"));
-        
         if (Input.GetKey(KeyCode.Space))
         {
-            if (roofRayCastHit)
+            if (flipUp)
             {
                 playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -5);
-            }else
+            }
+            else
             {
                 playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, 5);
             }
@@ -28,34 +32,54 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            playerRigidBody.velocity = new Vector2(3, playerRigidBody.velocity.y);
+            isFacingRight = true;
+            playerRigidBody.velocity = new Vector2(5, playerRigidBody.velocity.y);
         }
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            playerRigidBody.velocity = new Vector2(-3, playerRigidBody.velocity.y);
+            isFacingRight = false;
+            playerRigidBody.velocity = new Vector2(-5, playerRigidBody.velocity.y);
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
+            flipDown = false;
+            flipUp = true;
             playerRigidBody.gravityScale = -3;
             playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, 10);
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
+            flipDown = true;
+            flipUp = false;
             playerRigidBody.gravityScale = 3;
             playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -10);
         }
 
-        if (roofRayCastHit)
+        if (flipUp)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, -180), Time.deltaTime * 20);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, -180), Time.deltaTime * 10);
         }
 
-        if (groundRayCastHit)
+        if (flipDown)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 20);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 10);
+        }
+
+        Flip();
+    }
+
+    void Flip()
+    {
+        if (isFacingRight == true)
+        {
+            transform.localScale = new Vector3(.5f, .5f, 0);
+        }
+        if (isFacingRight == false)
+        {
+            transform.localScale = new Vector3(-.5f, .5f, 0);
         }
     }
 }
