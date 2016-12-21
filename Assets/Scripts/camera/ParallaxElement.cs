@@ -1,32 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [ExecuteInEditMode]
-/// <summary>
-/// Add this to a GameObject to have it move in parallax 
-/// </summary>
-
 // This script is based on David Dion-Paquet's great article on http://www.gamasutra.com/blogs/DavidDionPaquet/20140601/218766/Creating_a_parallax_system_in_Unity3D_is_harder_than_it_seems.php
-
 public class ParallaxElement : MonoBehaviour 
 {
-	/// horizontal speed of the layer
 	public float HorizontalSpeed;
-	/// vertical speed of the layer
 	public float VerticalSpeed;
-	/// defines if the layer moves in the same direction as the camera or not
 	public bool MoveInOppositeDirection;
 
-	// private stuff
 	private Vector3 _previousCameraPosition;
 	private bool _previousMoveParallax;
 	private ParallaxCamera _parallaxCamera;
 	private CameraController _camera;
 	private Transform _cameraTransform;
 
-	/// <summary>
-	/// Initialization
-	/// </summary>
 	void OnEnable() 
 	{
 		if (GameObject.FindGameObjectWithTag("MainCamera")==null)
@@ -38,9 +25,6 @@ public class ParallaxElement : MonoBehaviour
 		_previousCameraPosition = _cameraTransform.position;
 	}
 
-	/// <summary>
-	/// Every frame, we move the parallax layer according to the camera's position
-	/// </summary>
 	void Update () 
 	{
 		if (_parallaxCamera==null)

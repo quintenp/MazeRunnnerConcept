@@ -77,7 +77,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraShake.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\LevelTimer.cs" />
+    <Compile Include="Assets\Scripts\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\camera\CameraController.cs" />
     <Compile Include="Assets\Scripts\camera\LevelLimits.cs" />
     <Compile Include="Assets\Scripts\camera\ParallaxCamera.cs" />

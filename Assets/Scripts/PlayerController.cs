@@ -4,34 +4,36 @@ public class PlayerController : MonoBehaviour
 {
     public Transform GroundCheck;
     public Transform WallCheck;
+
     public float JumpForce;
     public float FlipForce;
     public float MovementSpeed;
-    
-    private GameManager gameManager;
+    public int moveDirection;
 
+    private GameManager gameManager;
     private Rigidbody2D playerRigidBody;
     private Animator playerAnimator;
 
-    private Vector3 playerStartPosition;
     private bool flipUp;
     private bool flipDown;
     private bool isFacingRight;
     private bool grounded;
     private bool walking;
 
-    public int moveDirection;
-
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
+    }
 
-        walking = false;
-        isFacingRight = true;
+    void OnEnable()
+    {
         moveDirection = 0;
-        playerStartPosition = transform.position;
+        flipDown = true;
+        flipUp = false;
+        isFacingRight = true;
+        walking = false;
     }
 
     void Update()
@@ -113,7 +115,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Spike"))
         {
@@ -128,19 +130,5 @@ public class PlayerController : MonoBehaviour
             walking = false;
             isFacingRight = !isFacingRight;
         }
-    }
-
-    void OnDisable()
-    {
-        playerAnimator.SetBool("Death", false);
-        transform.position = playerStartPosition;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        moveDirection = 0;
-        playerRigidBody.velocity = Vector2.zero;
-        playerRigidBody.gravityScale = 9;
-        flipDown = true;
-        flipUp = false;
-        isFacingRight = true;
-        walking = false;
-    }
+    }  
 }
