@@ -8,10 +8,6 @@ public class ScoreManager : MonoBehaviour {
 
     public float ScoreCount;
     public float HighScoreCount;
-    public float PointsPerSeconds;
-
-    public bool ScoreIncreasing;
-    public bool ShouldDouble;
 
 	void Start () {
         if (PlayerPrefs.HasKey("HighScore"))
@@ -22,16 +18,6 @@ public class ScoreManager : MonoBehaviour {
 
     void Update()
     {
-        if (ScoreIncreasing)
-        {
-            if (ShouldDouble)
-            {
-                ScoreCount += (PointsPerSeconds * 2) * Time.deltaTime;
-            }
-
-            ScoreCount += PointsPerSeconds * Time.deltaTime;
-        }
-
         if (ScoreCount > HighScoreCount)
         {
             HighScoreCount = ScoreCount;
@@ -44,11 +30,6 @@ public class ScoreManager : MonoBehaviour {
 
     public void AddToScore(int sccoreIncrement)
     {
-        if (ShouldDouble)
-        {
-            sccoreIncrement = sccoreIncrement * 2;
-        }
-
         ScoreCount += sccoreIncrement;
     }
 }
