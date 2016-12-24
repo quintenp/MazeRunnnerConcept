@@ -5,6 +5,10 @@ public class PlayerController : MonoBehaviour
     public Transform GroundCheck;
     public Transform WallCheck;
 
+    public AudioSource JumpSound;
+    public AudioSource OuchSound;
+    public AudioSource FlipSound;
+
     public float JumpForce;
     public float FlipForce;
     public float MovementSpeed;
@@ -47,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
+            JumpSound.Play();
+
             if (flipUp)
             {
                 playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, -JumpForce);
@@ -73,6 +79,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
+            FlipSound.Play();
             flipDown = false;
             flipUp = true;
             playerRigidBody.gravityScale = -9;
@@ -81,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
+            FlipSound.Play();
             flipDown = true;
             flipUp = false;
             playerRigidBody.gravityScale = 9;
@@ -119,6 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Spike"))
         {
+            OuchSound.Play();
             gameManager.PlayerDeathPosition = playerRigidBody.position;
             gameManager.ResetGame();
             gameObject.SetActive(false);
