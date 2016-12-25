@@ -5,7 +5,7 @@
 
 Character auto runs you only have to tap the direction you want him to run in
 
-Movement controls Keyboard :
+##Movement controls Keyboard :
 
 
 Left:       A
@@ -22,7 +22,7 @@ Flip Up:    W
 
 Flip Down:  S
 
-Movement controls Touch Screen(works with mouse too) :
+##Movement controls Touch Screen(works with mouse too) :
 
 
 Left:       Swipe Left
