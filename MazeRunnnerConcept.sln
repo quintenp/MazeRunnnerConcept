@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeRunnnerConcept", "MazeRunnnerConcept.csproj", "{BFFA1EC3-E12B-5DEC-1B41-A787BFBE699C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeRunnnerConcept.Editor", "MazeRunnnerConcept.Editor.csproj", "{327C7CAD-CB18-17B3-B580-2DE0E6C3C42A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{BFFA1EC3-E12B-5DEC-1B41-A787BFBE699C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFFA1EC3-E12B-5DEC-1B41-A787BFBE699C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFFA1EC3-E12B-5DEC-1B41-A787BFBE699C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327C7CAD-CB18-17B3-B580-2DE0E6C3C42A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{327C7CAD-CB18-17B3-B580-2DE0E6C3C42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{327C7CAD-CB18-17B3-B580-2DE0E6C3C42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{327C7CAD-CB18-17B3-B580-2DE0E6C3C42A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using HedgehogTeam.EasyTouch;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
         flipUp = false;
         isFacingRight = true;
         walking = false;
+        EasyTouch.On_SwipeEnd += On_SwipeEnd;
+        EasyTouch.On_SimpleTap += On_SimpleTap;
     }
 
     void Update()
@@ -139,5 +142,66 @@ public class PlayerController : MonoBehaviour
             walking = false;
             isFacingRight = !isFacingRight;
         }
-    }  
+    }
+
+    void On_SwipeEnd(Gesture gesture)
+    {
+        switch (gesture.swipe)
+        {
+            case EasyTouch.SwipeDirection.DownLeft:
+            case EasyTouch.SwipeDirection.UpLeft:
+            case EasyTouch.SwipeDirection.Left:
+                walking = true;
+                isFacingRight = false;
+                moveDirection = -1;
+                break;
+            case EasyTouch.SwipeDirection.DownRight:
+            case EasyTouch.SwipeDirection.UpRight:
+            case EasyTouch.SwipeDirection.Right:
+                walking = true;
+                isFacingRight = true;
+                moveDirection = 1;
+                break;
+            case EasyTouch.SwipeDirection.Up:
+                FlipSound.Play();
+                flipDown = false;
+                flipUp = true;
+                playerRigidBody.gravityScale = -9;
+                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, FlipForce);
+                break;
+            case EasyTouch.SwipeDirection.Down:
+                FlipSound.Play();
+                flipDown = true;
+                flipUp = false;
+                playerRigidBody.gravityScale = 9;
+                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -FlipForce);
+                break;
+        }
+    }
+
+    void On_SimpleTap(Gesture gesture)
+    {
+        JumpSound.Play();
+
+        if (flipUp)
+        {
+            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, -JumpForce);
+        }
+        else
+        {
+            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, JumpForce);
+        }
+    }
+
+    void OnDestroy()
+    {
+        EasyTouch.On_SwipeEnd -= On_SwipeEnd;
+        EasyTouch.On_SimpleTap -= On_SimpleTap;
+    }
+
+    void OnDisable()
+    {
+        EasyTouch.On_SwipeEnd -= On_SwipeEnd;
+        EasyTouch.On_SimpleTap -= On_SimpleTap;
+    }
 }
