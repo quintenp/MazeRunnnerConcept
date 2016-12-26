@@ -61,11 +61,11 @@ public class PlayerController : MonoBehaviour
 
             if (flipUp)
             {
-                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, -JumpForce);
+                playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, -JumpForce), ForceMode2D.Impulse);
             }
             else
             {
-                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, JumpForce);
+                playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, JumpForce), ForceMode2D.Impulse);
             }
         }
 
@@ -192,11 +192,13 @@ public class PlayerController : MonoBehaviour
 
         if (flipUp)
         {
-            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, -JumpForce);
+            playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, -JumpForce), ForceMode2D.Impulse);
+         //   playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -JumpForce);
         }
         else
         {
-            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x + 2, JumpForce);
+            playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, JumpForce), ForceMode2D.Impulse);
+            //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, JumpForce);
         }
     }
 
