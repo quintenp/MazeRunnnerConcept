@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour {
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("PrototypeFlipping");
+        SceneManager.LoadScene("LevelOne");
     }
 
     public void QuitGame()

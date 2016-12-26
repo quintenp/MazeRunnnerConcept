@@ -51,12 +51,19 @@ public class GameManager : MonoBehaviour
 
         var coins = Resources.FindObjectsOfTypeAll<PickupPoints>();
 
-        foreach (var coin in coins)
+        if (coins != null && coins.Length > 0)
         {
-            coin.gameObject.SetActive(true);
+            foreach (var coin in coins)
+            {
+                coin.gameObject.SetActive(true);
+            }
         }
 
-        scoreManager.ScoreCount = 0;
+        if(scoreManager != null)
+        {
+            scoreManager.ScoreCount = 0;
+        }
+        
 
         Player.transform.position = playerStartPosition;
         Player.transform.rotation = Quaternion.Euler(0, 0, 0);

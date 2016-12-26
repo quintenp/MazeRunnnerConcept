@@ -1,5 +1,6 @@
 ﻿using HedgehogTeam.EasyTouch;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight;
     private bool grounded;
     private bool walking;
+
+    public string NextLevel;
 
     void Start()
     {
@@ -135,7 +138,11 @@ public class PlayerController : MonoBehaviour
             gameManager.ResetGame();
             gameObject.SetActive(false);
         }
-
+        if (collision.gameObject.tag.Equals("Exit"))
+        {
+            gameObject.SetActive(false);
+            SceneManager.LoadScene(NextLevel);
+        }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             moveDirection = 0;
