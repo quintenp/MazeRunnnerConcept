@@ -124,11 +124,11 @@ public class PlayerController : MonoBehaviour
 
             if (flipUp)
             {
-                playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, -JumpForce), ForceMode2D.Impulse);
+                playerRigidBody.velocity = new Vector2(MovementSpeed, -JumpForce);
             }
             else
             {
-                playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, JumpForce), ForceMode2D.Impulse);
+                playerRigidBody.velocity = new Vector2(MovementSpeed, JumpForce);
             }
         }
     }

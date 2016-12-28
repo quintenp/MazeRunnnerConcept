@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         Player.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         playerRigidBody.velocity = Vector2.zero;
-        playerRigidBody.gravityScale = 9;
+        playerRigidBody.gravityScale = 3;
 
         Player.SetActive(true);
     }
