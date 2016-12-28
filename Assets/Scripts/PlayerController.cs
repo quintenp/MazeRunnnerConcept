@@ -42,20 +42,83 @@ public class PlayerController : MonoBehaviour
         flipUp = false;
         isFacingRight = true;
         walking = false;
-        EasyTouch.On_SwipeEnd += On_SwipeEnd;
-        EasyTouch.On_SimpleTap += On_SimpleTap;
+        EasyTouch.On_SwipeEnd += OnSwipeEndEvent;
+        EasyTouch.On_SimpleTap += OnTapEvent;
+        EasyTouch.On_DoubleTap += OnTapEvent;
     }
 
     void Update()
     {
         grounded = Physics2D.OverlapCircle(GroundCheck.position, 0.1f, 1 << LayerMask.NameToLayer("Ground")) || Physics2D.OverlapCircle(GroundCheck.position, 0.1f, 1 << LayerMask.NameToLayer("Roof"));
 
-        if (grounded)
+        playerRigidBody.velocity = new Vector2(MovementSpeed * moveDirection, playerRigidBody.velocity.y);
+
+        HandleKeyboardInput();
+
+        ApplyVerticalRotation();
+
+        ApplyHorizontalRotation();
+
+        playerAnimator.SetBool("Grounded", grounded);
+        playerAnimator.SetBool("Walking", walking);
+    }
+
+    void HandleKeyboardInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
-            playerRigidBody.velocity = new Vector2(MovementSpeed * moveDirection, playerRigidBody.velocity.y);
+            Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKey(KeyCode.D))
+        {
+            WalkRight();
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            WalkLeft();
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            FlipUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            FlipDown();
+        }
+    }
+
+    void ApplyHorizontalRotation()
+    {
+        if (isFacingRight == true)
+        {
+            transform.localScale = new Vector3(.6f, .6f, 0);
+        }
+        if (isFacingRight == false)
+        {
+            transform.localScale = new Vector3(-.6f, .6f, 0);
+        }
+    }
+
+    void ApplyVerticalRotation()
+    {
+        if (flipUp)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, -180), Time.deltaTime * 10);
+        }
+
+        if (flipDown)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 10);
+        }
+    }
+
+    void Jump()
+    {
+        if (grounded)
         {
             JumpSound.Play();
 
@@ -68,65 +131,38 @@ public class PlayerController : MonoBehaviour
                 playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, JumpForce), ForceMode2D.Impulse);
             }
         }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            walking = true;
-            isFacingRight = true;
-            moveDirection = 1;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            walking = true;
-            isFacingRight = false;
-            moveDirection = -1;
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            FlipSound.Play();
-            flipDown = false;
-            flipUp = true;
-            playerRigidBody.gravityScale = -9;
-            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, FlipForce);
-        }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            FlipSound.Play();
-            flipDown = true;
-            flipUp = false;
-            playerRigidBody.gravityScale = 9;
-            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -FlipForce);
-        }
-
-        if (flipUp)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, -180), Time.deltaTime * 10);
-        }
-
-        if (flipDown)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 10);
-        }
-
-        Flip();
-
-        playerAnimator.SetBool("Grounded", grounded);
-        playerAnimator.SetBool("Walking", walking);
     }
 
-    void Flip()
+    void WalkLeft()
     {
-        if (isFacingRight == true)
-        {
-            transform.localScale = new Vector3(.6f, .6f, 0);
-        }
-        if (isFacingRight == false)
-        {
-            transform.localScale = new Vector3(-.6f, .6f, 0);
-        }
+        walking = true;
+        isFacingRight = false;
+        moveDirection = -1;
+    }
+
+    void WalkRight()
+    {
+        walking = true;
+        isFacingRight = true;
+        moveDirection = 1;
+    }
+
+    void FlipUp()
+    {
+        FlipSound.Play();
+        flipDown = false;
+        flipUp = true;
+        playerRigidBody.gravityScale = -3;
+        playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, FlipForce);
+    }
+
+    void FlipDown()
+    {
+        FlipSound.Play();
+        flipDown = true;
+        flipUp = false;
+        playerRigidBody.gravityScale = 3;
+        playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -FlipForce);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -151,66 +187,45 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void On_SwipeEnd(Gesture gesture)
+    void OnSwipeEndEvent(Gesture gesture)
     {
         switch (gesture.swipe)
         {
             case EasyTouch.SwipeDirection.DownLeft:
             case EasyTouch.SwipeDirection.UpLeft:
             case EasyTouch.SwipeDirection.Left:
-                walking = true;
-                isFacingRight = false;
-                moveDirection = -1;
+                WalkLeft();
                 break;
             case EasyTouch.SwipeDirection.DownRight:
             case EasyTouch.SwipeDirection.UpRight:
             case EasyTouch.SwipeDirection.Right:
-                walking = true;
-                isFacingRight = true;
-                moveDirection = 1;
+                WalkRight();
                 break;
             case EasyTouch.SwipeDirection.Up:
-                FlipSound.Play();
-                flipDown = false;
-                flipUp = true;
-                playerRigidBody.gravityScale = -9;
-                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, FlipForce);
+                FlipUp();
                 break;
             case EasyTouch.SwipeDirection.Down:
-                FlipSound.Play();
-                flipDown = true;
-                flipUp = false;
-                playerRigidBody.gravityScale = 9;
-                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -FlipForce);
+                FlipDown();
                 break;
         }
     }
 
-    void On_SimpleTap(Gesture gesture)
+    void OnTapEvent(Gesture gesture)
     {
-        JumpSound.Play();
-
-        if (flipUp)
-        {
-            playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, -JumpForce), ForceMode2D.Impulse);
-         //   playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, -JumpForce);
-        }
-        else
-        {
-            playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, JumpForce), ForceMode2D.Impulse);
-            //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, JumpForce);
-        }
+        Jump();
     }
 
     void OnDestroy()
     {
-        EasyTouch.On_SwipeEnd -= On_SwipeEnd;
-        EasyTouch.On_SimpleTap -= On_SimpleTap;
+        EasyTouch.On_SwipeEnd -= OnSwipeEndEvent;
+        EasyTouch.On_SimpleTap -= OnTapEvent;
+        EasyTouch.On_DoubleTap -= OnTapEvent;
     }
 
     void OnDisable()
     {
-        EasyTouch.On_SwipeEnd -= On_SwipeEnd;
-        EasyTouch.On_SimpleTap -= On_SimpleTap;
+        EasyTouch.On_SwipeEnd -= OnSwipeEndEvent;
+        EasyTouch.On_SimpleTap -= OnTapEvent;
+        EasyTouch.On_DoubleTap -= OnTapEvent;
     }
 }
