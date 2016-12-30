@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float FlipForce;
     public float MovementSpeed;
     public int moveDirection;
+    public Animator SwipeAnimator;
 
     private GameManager gameManager;
     private Rigidbody2D playerRigidBody;
@@ -194,11 +195,13 @@ public class PlayerController : MonoBehaviour
             case EasyTouch.SwipeDirection.DownLeft:
             case EasyTouch.SwipeDirection.UpLeft:
             case EasyTouch.SwipeDirection.Left:
+                SwipeAnimator.Play("SwipeRight",0,0);
                 WalkLeft();
                 break;
             case EasyTouch.SwipeDirection.DownRight:
             case EasyTouch.SwipeDirection.UpRight:
             case EasyTouch.SwipeDirection.Right:
+                SwipeAnimator.Play("SwipeRight", 0, 0);
                 WalkRight();
                 break;
             case EasyTouch.SwipeDirection.Up:
